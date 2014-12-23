@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import next.dao.AnswerDao;
+import next.dao.QuestionDao;
 import next.model.Answer;
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
@@ -15,7 +16,7 @@ import core.utils.ServletRequestUtils;
 public class UpdateController extends AbstractController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ShowController.class);
-
+	private QuestionDao questionDao = new QuestionDao(); 
 	private AnswerDao answerDao = new AnswerDao();
 	private Answer answer;
 
@@ -30,6 +31,8 @@ public class UpdateController extends AbstractController {
 		answer = new Answer(writer, contents, questionId);
 
 		answerDao.insert(answer);
+		questionDao.plusCountOfComment(questionId);
+		
 		ModelAndView mav = jsonView();
 		return mav;
 	}
